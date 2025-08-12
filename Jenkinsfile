@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven-3.9.6' // Must match the name you configured in Jenkins tools
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -21,9 +24,8 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_TOKEN')]) {
-                    sh 'echo "Token length: ${#DOCKER_TOKEN}"'
-                    sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
+                withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
+                    sh 'echo "$DOCKER_PASS" | docker login -u aloofhoneybee --password-stdin'
                     sh 'docker push aloofhoneybee/todo-list-java:latest'
                 }
             }
