@@ -19,7 +19,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
-                    sh "echo $DOCKER_PASS | docker login -u aloofhoneybee --password-stdin"
+                    sh 'echo "$DOCKER_PASS" | docker login -u aloofhoneybee --password-stdin'
                     sh 'docker push aloofhoneybee/todo-list-java:latest'
                 }
             }
