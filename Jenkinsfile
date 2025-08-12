@@ -16,6 +16,7 @@ pipeline {
                 sh 'docker build -t aloofhoneybee/todo-list-java:latest .'
             }
         }
+        sh 'echo "DOCKER_PASS length: ${#DOCKER_PASS}"'
         stage('Push to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-pass', variable: 'DOCKER_PASS')]) {
